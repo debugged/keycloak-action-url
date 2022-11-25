@@ -56,6 +56,6 @@ jobs:
         title: "chore(release): Prepare next version after release ${{ github.event.inputs.releaseVersion }}"
         body: "Automated PR to prepare next version after release ${{ github.event.inputs.releaseVersion }}"
         labels: "release"
-        assignees: "debugged"
+        assignees: "toonvanstrijp"
       env:
         GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
