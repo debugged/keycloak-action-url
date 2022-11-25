@@ -1,6 +1,12 @@
-# Keycloak: Restrict user authorization on clients
+# Keycloak: Get required actions login url
 
-This is a simple Keycloak authenticator to restrict user authorization on clients.
+This is a simple Keycloak plugin that adds support for generating the password reset link with multiple actions. But instead of only returning it by email, this plugin also gives it in the response.
+
+```json
+{
+    "link": "https://realm/..."
+}
+```
 
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/debugged/keycloak-action-url?sort=semver)
 ![Keycloak Dependency Version](https://img.shields.io/badge/Keycloak-20.0.1-blue)
@@ -12,4 +18,24 @@ This is a simple Keycloak authenticator to restrict user authorization on client
 
 ## What is it good for?
 
-Every now and then I get asked whether it is possible to restrict user authorization on certain clients.
+By default keycloak does not allow you to create a temporary login url and use it elsewhere. Keycloak only send it per email. This plugin adds a extra api endpoint which you can use to generate this link on demand.
+
+## How to use?
+```shell
+curl --location --request POST 'http://localhost:8080/realms/test-realm/action-url' \
+--header 'Authorization: Bearer <access-token>' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "user_id": "139020a3-4459-43b1-a92f-d90e5cf093a3",
+    "client_id": "account",
+    "lifespan": 43200,
+    "redirectUri: "https://debugged.nl",
+    "actions": ["VERIFY_EMAIL", "UPDATE_PASSWORD"]
+}'
+```
+Response:
+```json
+{
+    "link": "http://localhost:8080/realms/test-realm/login-actions/action-token?key=..."
+}
+```
