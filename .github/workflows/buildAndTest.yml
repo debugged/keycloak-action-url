@@ -1,4 +1,4 @@
-name: Build and org.keycloak.services.resource.RealmResourceProviderFactory
+name: Build and test
 
 on:
   push:
@@ -22,7 +22,7 @@ jobs:
         cache: 'maven'
     - name: Build
       run: mvn -B clean package --file pom.xml
-    - name: Integration org.keycloak.services.resource.RealmResourceProviderFactory
+    - name: Integration test
       run: mvn -B failsafe:integration-test failsafe:verify --file pom.xml
   compatibility:
     runs-on: ubuntu-latest
