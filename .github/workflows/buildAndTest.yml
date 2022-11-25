@@ -1,0 +1,49 @@
+name: Build and org.keycloak.services.resource.RealmResourceProviderFactory
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+    - 'src/**'
+    - '*.xml'
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up JDK 11
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: 11
+        cache: 'maven'
+    - name: Build
+      run: mvn -B clean package --file pom.xml
+    - name: Integration org.keycloak.services.resource.RealmResourceProviderFactory
+      run: mvn -B failsafe:integration-test failsafe:verify --file pom.xml
+  compatibility:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        keycloak_version: [ 19.0.3, 20.0.1, latest ]
+        keycloak_dist: [quarkus]
+        experimental: [false]
+        include:
+          - keycloak_version: nightly
+            keycloak_dist: quarkus
+            experimental: true
+    continue-on-error: ${{ matrix.experimental }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: 11
+          cache: 'maven'
+      - name: Compatibility tests
+        run: mvn -B -U clean test-compile failsafe:integration-test failsafe:verify --file pom.xml -Dkeycloak.version=${{ matrix.keycloak_version }} -Dkeycloak.dist=${{ matrix.keycloak_dist }}
