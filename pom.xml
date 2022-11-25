@@ -4,7 +4,7 @@
 
     <groupId>nl.debugged.keycloak</groupId>
     <artifactId>keycloak-action-url</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>20.0.0-SNAPSHOT</version>
 
     <name>Keycloak: Extended user action api</name>
     <description>A Keycloak api for creating and getting the temporary action link</description>
