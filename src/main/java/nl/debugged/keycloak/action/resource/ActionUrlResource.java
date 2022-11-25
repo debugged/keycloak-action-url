@@ -34,7 +34,7 @@ public class ActionUrlResource extends AbstractAdminResource {
     @POST()
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public ActionUrlResponse createMagicLink(final ActionUrlRequest rep) {
+    public ActionUrlResponse createActionUrl(final ActionUrlRequest rep) {
         String userId = rep.getUserId();
         String redirectUri = rep.getRedirectUri();
         String clientId = rep.getClientId();
