@@ -111,7 +111,7 @@ public class ActionUrlResource extends AbstractAdminResource {
         // Because of the risk, throw an exception for master realm
         if (Config.getAdminRealm().equals(realm.getName())) {
             throw new IllegalStateException(
-                String.format("Magic links not allowed for %s realm", Config.getAdminRealm()));
+                String.format("Action url not allowed for %s realm", Config.getAdminRealm()));
         }
         session.getContext().setRealm(realm);
 
